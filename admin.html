@@ -8,7 +8,10 @@
 <body>
 
   <div class="container">
-    <h2>Liste des inscriptions</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h2>Liste des inscriptions</h2>
+      <button id="logout">Déconnexion</button>
+    </div>
 
     <div class="table-wrapper">
       <table>
@@ -33,6 +36,18 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
 
+  <!-- 🔐 Protection admin -->
+  <script>
+    (async () => {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+
+      if (!session) {
+        window.location.href = "login.html";
+      }
+    })();
+  </script>
+
+  <!-- Charger les données -->
   <script>
     async function loadData() {
       const { data, error } = await supabaseClient
@@ -65,6 +80,14 @@
     }
 
     loadData();
+  </script>
+
+  <!-- 🚪 Déconnexion -->
+  <script>
+    document.getElementById("logout").addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      window.location.href = "login.html";
+    });
   </script>
 
 </body>
