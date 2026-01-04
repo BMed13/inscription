@@ -24,7 +24,7 @@
   <tbody id="table"></tbody>
 </table>
 
-<!-- Supabase config -->
+<!-- Connexion Supabase (UNE SEULE FOIS) -->
 <script src="supabase.js"></script>
 
 <script>
@@ -34,8 +34,11 @@ async function loadData() {
     .select("*")
     .order("created_at", { ascending: false });
 
+  console.log("DATA:", data);
+  console.log("ERROR:", error);
+
   if (error) {
-    console.error(error);
+    alert("Erreur de chargement");
     return;
   }
 
