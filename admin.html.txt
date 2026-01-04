@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin</title>
+</head>
+<body>
+
+<h2>Liste des inscriptions</h2>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>Âge</th>
+      <th>Email</th>
+      <th>Téléphone</th>
+      <th>Langue</th>
+      <th>Niveau</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody id="table"></tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabase = supabase.createClient(
+  "SUPABASE_URL",
+  "SUPABASE_ANON_KEY"
+);
+
+const loadData = async () => {
+  const { data } = await supabase
+    .from("inscriptions")
+    .select("*")
+    .order("id", { ascending: false });
+
+  const table = document.getElementById("table");
+
+  data.forEach(r => {
+    table.innerHTML += `
+      <tr>
+        <td>${r.nom}</td>
+        <td>${r.prenom}</td>
+        <td>${r.age}</td>
+        <td>${r.email}</td>
+        <td>${r.telephone}</td>
+        <td>${r.langue}</td>
+        <td>${r.niveau}</td>
+        <td>${new Date(r.created_at).toLocaleString()}</td>
+      </tr>`;
+  });
+};
+
+loadData();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscription</title>
+</head>
+<body>
+
+<h2>Formulaire d'inscription</h2>
+
+<form id="form">
+
+  <input id="nom" placeholder="Nom" required><br><br>
+  <input id="prenom" placeholder="Prénom" required><br><br>
+
+  <input id="age" type="number" placeholder="Âge" required><br><br>
+
+  <input id="email" type="email" placeholder="Email" required><br><br>
+
+  <input id="telephone" placeholder="Numéro de téléphone" required><br><br>
+
+  <label>Langue :</label><br>
+  <select id="langue" required>
+    <option value="">-- Choisir --</option>
+    <option value="Arabe">Arabe</option>
+    <option value="Français">Français</option>
+    <option value="Anglais">Anglais</option>
+  </select><br><br>
+
+  <label>Niveau :</label><br>
+  <select id="niveau" required>
+    <option value="">-- Choisir --</option>
+    <option value="A1">A1</option>
+    <option value="A2">A2</option>
+    <option value="B1">B1</option>
+    <option value="B2">B2</option>
+  </select><br><br>
+
+  <button type="submit">Envoyer</button>
+
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabase = supabase.createClient(
+  "SUPABASE_URL",
+  "SUPABASE_ANON_KEY"
+);
+
+document.getElementById("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const { error } = await supabase
+    .from("inscriptions")
+    .insert({
+      nom: nom.value,
+      prenom: prenom.value,
+      age: age.value,
+      email: email.value,
+      telephone: telephone.value,
+      langue: langue.value,
+      niveau: niveau.value
+    });
+
+  if (error) {
+    alert("Erreur lors de l'envoi");
+    console.error(error);
+  } else {
+    alert("Inscription envoyée avec succès");
+    e.target.reset();
+  }
+});
+</script>
+
+</body>
+</html>
