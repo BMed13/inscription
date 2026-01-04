@@ -9,7 +9,6 @@
 <h2>Formulaire d'inscription</h2>
 
 <form id="form">
-
   <input id="nom" placeholder="Nom" required><br><br>
   <input id="prenom" placeholder="Prénom" required><br><br>
 
@@ -37,31 +36,32 @@
   </select><br><br>
 
   <button type="submit">Envoyer</button>
-
 </form>
 
-<!-- Supabase config -->
+<!-- Connexion Supabase (UNE SEULE FOIS) -->
 <script src="supabase.js"></script>
 
 <script>
 document.getElementById("form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const { error } = await supabaseClient
+  const { data, error } = await supabaseClient
     .from("inscriptions")
     .insert({
       nom: nom.value,
       prenom: prenom.value,
-      age: age.value,
+      age: parseInt(age.value, 10),
       email: email.value,
       telephone: telephone.value,
       langue: langue.value,
       niveau: niveau.value
     });
 
+  console.log("DATA:", data);
+  console.log("ERROR:", error);
+
   if (error) {
     alert("Erreur lors de l'inscription");
-    console.error(error);
   } else {
     alert("Inscription envoyée avec succès");
     e.target.reset();
