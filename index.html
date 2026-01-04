@@ -3,73 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <title>Inscription</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>Formulaire d'inscription</h2>
+  <div class="container">
+    <h2>Formulaire d'inscription</h2>
 
-<form id="form">
-  <input id="nom" placeholder="Nom" required><br><br>
-  <input id="prenom" placeholder="Prénom" required><br><br>
+    <form id="form">
 
-  <input id="age" type="number" placeholder="Âge" required><br><br>
+      <input id="nom" placeholder="Nom" required>
+      <input id="prenom" placeholder="Prénom" required>
 
-  <input id="email" type="email" placeholder="Email" required><br><br>
+      <input id="age" type="number" placeholder="Âge" required>
+      <input id="email" type="email" placeholder="Email" required>
 
-  <input id="telephone" placeholder="Numéro de téléphone" required><br><br>
+      <input id="telephone" placeholder="Numéro de téléphone" required>
 
-  <label>Langue :</label><br>
-  <select id="langue" required>
-    <option value="">-- Choisir --</option>
-    <option value="Arabe">Arabe</option>
-    <option value="Français">Français</option>
-    <option value="Anglais">Anglais</option>
-  </select><br><br>
+      <select id="langue" required>
+        <option value="">Langue</option>
+        <option value="Arabe">Arabe</option>
+        <option value="Français">Français</option>
+        <option value="Anglais">Anglais</option>
+      </select>
 
-  <label>Niveau :</label><br>
-  <select id="niveau" required>
-    <option value="">-- Choisir --</option>
-    <option value="A1">A1</option>
-    <option value="A2">A2</option>
-    <option value="B1">B1</option>
-    <option value="B2">B2</option>
-  </select><br><br>
+      <select id="niveau" required>
+        <option value="">Niveau</option>
+        <option value="A1">A1</option>
+        <option value="A2">A2</option>
+        <option value="B1">B1</option>
+        <option value="B2">B2</option>
+      </select>
 
-  <button type="submit">Envoyer</button>
-</form>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+      <button type="submit">Envoyer</button>
+    </form>
+  </div>
 
-<!-- Connexion Supabase (UNE SEULE FOIS) -->
-<script src="supabase.js"></script>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
 
-<script>
-document.getElementById("form").addEventListener("submit", async (e) => {
-  e.preventDefault();
+  <script>
+    document.getElementById("form").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-  const { data, error } = await supabaseClient
-    .from("inscriptions")
-    .insert({
-      nom: nom.value,
-      prenom: prenom.value,
-      age: parseInt(age.value, 10),
-      email: email.value,
-      telephone: telephone.value,
-      langue: langue.value,
-      niveau: niveau.value
+      const { error } = await supabaseClient
+        .from("inscriptions")
+        .insert({
+          nom: nom.value,
+          prenom: prenom.value,
+          age: parseInt(age.value, 10),
+          email: email.value,
+          telephone: telephone.value,
+          langue: langue.value,
+          niveau: niveau.value
+        });
+
+      if (error) {
+        alert("Erreur lors de l'inscription");
+        console.error(error);
+      } else {
+        alert("Inscription envoyée avec succès");
+        e.target.reset();
+      }
     });
-
-  console.log("DATA:", data);
-  console.log("ERROR:", error);
-
-  if (error) {
-    alert("Erreur lors de l'inscription");
-  } else {
-    alert("Inscription envoyée avec succès");
-    e.target.reset();
-  }
-});
-</script>
+  </script>
 
 </body>
 </html>
-
