@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container login-container">
+    <h2>Connexion Admin</h2>
+
+    <form id="loginForm" class="login-form">
+
+      <input
+        id="email"
+        type="email"
+        placeholder="Email administrateur"
+        required
+      >
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Mot de passe"
+        required
+      >
+
+      <button type="submit">Se connecter</button>
+
+      <p id="error" class="error-message"></p>
+
+    </form>
+  </div>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const errorText = document.getElementById("error");
+      errorText.textContent = "";
+
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email: email.value,
+        password: password.value
+      });
+
+      if (error) {
+        errorText.textContent = "Email ou mot de passe incorrect";
+      } else {
+        window.location.href = "admin.html";
+      }
+    });
+  </script>
+
+</body>
+</html>
