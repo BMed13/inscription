@@ -40,17 +40,14 @@
 
 </form>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const supabase = supabase.createClient(
-  "SUPABASE_URL",
-  "SUPABASE_ANON_KEY"
-);
+<!-- Supabase config -->
+<script src="supabase.js"></script>
 
+<script>
 document.getElementById("form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const { error } = await supabase
+  const { error } = await supabaseClient
     .from("inscriptions")
     .insert({
       nom: nom.value,
@@ -63,7 +60,7 @@ document.getElementById("form").addEventListener("submit", async (e) => {
     });
 
   if (error) {
-    alert("Erreur lors de l'envoi");
+    alert("Erreur lors de l'inscription");
     console.error(error);
   } else {
     alert("Inscription envoyée avec succès");
