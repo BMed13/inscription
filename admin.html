@@ -3,67 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin - Inscriptions</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>Liste des inscriptions</h2>
+  <div class="container">
+    <h2>Liste des inscriptions</h2>
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>Nom</th>
-      <th>Prénom</th>
-      <th>Âge</th>
-      <th>Email</th>
-      <th>Téléphone</th>
-      <th>Langue</th>
-      <th>Niveau</th>
-      <th>Date</th>
-    </tr>
-  </thead>
-  <tbody id="table"></tbody>
-</table>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Âge</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Langue</th>
+            <th>Niveau</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="table"></tbody>
+      </table>
+    </div>
+  </div>
 
-<!-- Connexion Supabase (UNE SEULE FOIS) -->
-<script src="supabase.js"></script>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
 
-<script>
-async function loadData() {
-  const { data, error } = await supabaseClient
-    .from("inscriptions")
-    .select("*")
-    .order("created_at", { ascending: false });
+  <script>
+    async function loadData() {
+      const { data, error } = await supabaseClient
+        .from("inscriptions")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-  console.log("DATA:", data);
-  console.log("ERROR:", error);
+      if (error) {
+        alert("Erreur de chargement");
+        console.error(error);
+        return;
+      }
 
-  if (error) {
-    alert("Erreur de chargement");
-    return;
-  }
+      const table = document.getElementById("table");
+      table.innerHTML = "";
 
-  const table = document.getElementById("table");
-  table.innerHTML = "";
+      data.forEach(r => {
+        table.innerHTML += `
+          <tr>
+            <td>${r.nom}</td>
+            <td>${r.prenom}</td>
+            <td>${r.age}</td>
+            <td>${r.email}</td>
+            <td>${r.telephone}</td>
+            <td>${r.langue}</td>
+            <td>${r.niveau}</td>
+            <td>${new Date(r.created_at).toLocaleString()}</td>
+          </tr>`;
+      });
+    }
 
-  data.forEach(r => {
-    table.innerHTML += `
-      <tr>
-        <td>${r.nom}</td>
-        <td>${r.prenom}</td>
-        <td>${r.age}</td>
-        <td>${r.email}</td>
-        <td>${r.telephone}</td>
-        <td>${r.langue}</td>
-        <td>${r.niveau}</td>
-        <td>${new Date(r.created_at).toLocaleString()}</td>
-      </tr>`;
-  });
-}
-
-loadData();
-</script>
+    loadData();
+  </script>
 
 </body>
 </html>
-
